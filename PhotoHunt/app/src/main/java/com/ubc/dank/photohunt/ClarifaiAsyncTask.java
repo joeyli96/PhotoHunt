@@ -10,11 +10,15 @@ import com.clarifai.api.RecognitionResult;
  */
 public class ClarifaiAsyncTask extends AsyncTask<Void, Void, Boolean > {
 
-    public AsyncResponse delagate = null;
+    public static AsyncResponse delagate = null;
     private Bitmap bitmap;
     private String tag;
 
-    ClarifaiAsyncTask(Bitmap bitmap, String tag)
+    ClarifaiAsyncTask()
+    {
+    }
+
+    public void initialize(Bitmap bitmap, String tag)
     {
         this.bitmap = bitmap;
         this.tag = tag;

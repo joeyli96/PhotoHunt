@@ -3,19 +3,31 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.android.alpha.CameraTextureView
+    <com.ubc.dank.photohunt.CameraTextureView
         android:id="@+id/camera_preview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_weight="1"
         />
 
-    <ImageButton
-        android:id="@+id/launch_camera_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:layout_gravity="center_horizontal|bottom"
-        android:background="@drawable/ic_photo_camera" />
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/launch_camera_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="16dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="@drawable/ic_photo_camera" />
+        <Button
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="16dp"
+            android:id="@+id/check_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@android:color/transparent"
+            android:foreground="@drawable/ic_check_black_24dp"/>
+    </RelativeLayout>
 </LinearLayout>
