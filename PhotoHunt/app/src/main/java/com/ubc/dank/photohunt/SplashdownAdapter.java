@@ -34,7 +34,10 @@ public class SplashdownAdapter extends RecyclerView.Adapter<SplashdownAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.tag.setText(tagList[position]);
-        //need to do something here to update user's pictures and tag
+        //need to do something here to update user's pictures and tag, list of ids:
+        /**
+         *
+         */
     }
 
     @Override

@@ -13,14 +13,14 @@
         android:text="Tag Given"
         android:gravity="center"
         android:textSize="24dp"
+        android:textStyle="bold"
         android:textColor="@android:color/white"
-        android:background="@android:color/darker_gray"/>
+        android:background="@android:color/holo_orange_light"/>
 
     <LinearLayout
         android:id = "@+id/player_camera_input"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_green_light"
         android:layout_marginBottom="8dp"
         xmlns:android="http://schemas.android.com/apk/res/android">
         <ImageView
@@ -30,6 +30,7 @@
             android:scaleType="fitCenter"
             android:layout_centerVertical="true"
             android:layout_weight="1"
+            android:padding="8dp"
             android:src="@drawable/placeholder"/>
         <ImageView
             android:id="@+id/player2_pic"
@@ -38,6 +39,7 @@
             android:scaleType="fitCenter"
             android:layout_centerVertical="true"
             android:layout_weight="1"
+            android:padding="8dp"
             android:src="@drawable/placeholder"/>
     </LinearLayout>
 
