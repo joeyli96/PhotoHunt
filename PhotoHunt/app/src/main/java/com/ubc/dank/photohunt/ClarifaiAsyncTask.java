@@ -10,11 +10,15 @@ import com.clarifai.api.RecognitionResult;
  */
 public class ClarifaiAsyncTask extends AsyncTask<Void, Void, Boolean > {
 
-    public AsyncResponse delagate = null;
+    public static AsyncResponse delegate = null;
     private Bitmap bitmap;
     private String tag;
 
-    ClarifaiAsyncTask(Bitmap bitmap, String tag)
+    ClarifaiAsyncTask()
+    {
+    }
+
+    public void initialize(Bitmap bitmap, String tag)
     {
         this.bitmap = bitmap;
         this.tag = tag;
@@ -30,7 +34,7 @@ public class ClarifaiAsyncTask extends AsyncTask<Void, Void, Boolean > {
         return ClarifaiApi.checkTag(result, tag);
 
     }
-    @Override protected void onPostExecute(Boolean result) {
-        delagate.processFinished(result);
+    @Override public void onPostExecute(Boolean result) {
+        delegate.processFinished(result);
     }
 }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -14,8 +13,8 @@ import android.widget.TextView;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
-import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.GamesActivityResultCodes;
+import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.Multiplayer;
 import com.google.android.gms.games.multiplayer.OnInvitationReceivedListener;
@@ -27,7 +26,6 @@ import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.realtime.RoomStatusUpdateListener;
 import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.plus.Plus;
-
 import com.google.example.games.basegameutils.BaseGameUtils;
 
 import java.util.ArrayList;
@@ -126,6 +124,11 @@ public class MainActivity extends Activity
         // set up a click listener for everything we care about
         for (int id : CLICKABLES) {
             findViewById(id).setOnClickListener(this);
+        }
+        if(hasLeft) {
+            int score = intent.getIntExtra("score", -1);
+            hasLeft = false;
+
         }
     }
 
@@ -361,15 +364,15 @@ public class MainActivity extends Activity
         super.onStart();
     }
 
-    // Handle back key to make sure we cleanly leave a game if we are in the middle of one
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent e) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && mCurScreen == R.id.screen_game) {
-            leaveRoom();
-            return true;
-        }
-        return super.onKeyDown(keyCode, e);
-    }
+//    // Handle back key to make sure we cleanly leave a game if we are in the middle of one
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent e) {
+//        if (keyCode == KeyEvent.KEYCODE_BACK && mCurScreen == R.id.screen_game) {
+//            leaveRoom();
+//            return true;
+//        }
+//        return super.onKeyDown(keyCode, e);
+//    }
 
     // Leave the room.
     void leaveRoom() {
@@ -641,24 +644,16 @@ public class MainActivity extends Activity
     // Start the gameplay phase of the game.
     void startGame(boolean multiplayer) {
         mMultiplayer = multiplayer;
-        updateScoreDisplay();
-        broadcastScore(false);
-        switchToScreen(R.id.screen_game);
-
-        findViewById(R.id.button_click_me).setVisibility(View.VISIBLE);
-
-        // run the gameTick() method every second to update the game.
-        final Handler h = new Handler();
-        h.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mSecondsLeft <= 0)
-                    return;
-                gameTick();
-                h.postDelayed(this, 1000);
-            }
-        }, 1000);
+        startCameraActivity();
     }
+    boolean hasLeft = false;
+    public void startCameraActivity() {
+        hasLeft = true;
+        Intent intent = new Intent(this, CameraActivity.class);
+        startActivity(intent);
+    }
+
+
 
     // Game tick -- update countdown, check if game ended.
     void gameTick() {
@@ -689,6 +684,12 @@ public class MainActivity extends Activity
 
         // broadcast our new score to our peers
         broadcastScore(false);
+    }
+
+    private Intent intent;
+
+    void receiveIntent() {
+        int score = intent.getIntExtra("Score",-1);
     }
 
     /*
@@ -808,9 +809,8 @@ public class MainActivity extends Activity
             showInvPopup = (mCurScreen == R.id.screen_main);
         } else {
             // single-player: show on main screen and gameplay screen
-            showInvPopup = (mCurScreen == R.id.screen_main || mCurScreen == R.id.screen_game);
+            startCameraActivity();
         }
-        findViewById(R.id.invitation_popup).setVisibility(showInvPopup ? View.VISIBLE : View.GONE);
     }
 
     void switchToMainScreen() {

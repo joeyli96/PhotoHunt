@@ -1,19 +1,14 @@
 package com.ubc.dank.photohunt;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+
 import com.clarifai.api.ClarifaiClient;
 import com.clarifai.api.RecognitionRequest;
 import com.clarifai.api.RecognitionResult;
 import com.clarifai.api.Tag;
 import com.clarifai.api.exception.ClarifaiException;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.Log;
-
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
 /**
@@ -51,7 +46,8 @@ public class ClarifaiApi {
             if (result.getStatusCode() == RecognitionResult.StatusCode.OK) {
                 // Display the list of tags in the UI.
                 for (Tag resultTag : result.getTags()) {
-                    if (resultTag.getName().equals(tag))
+                    Log.i("TAG", resultTag.getName());
+                    if (resultTag.getName().toLowerCase().equals(tag.toLowerCase()))
                         return true;
                 }
                 return false ;

@@ -24,8 +24,11 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -58,6 +61,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -72,12 +76,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 public class CameraFragment extends Fragment
-        implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
-
+        implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback, ClarifaiAsyncTask.AsyncResponse {
     /**
      * Conversion from screen rotation to JPEG orientation.
      */
@@ -91,6 +95,8 @@ public class CameraFragment extends Fragment
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
+
+    private Button checkButton;
 
     /**
      * Tag for the {@link Log}.
@@ -430,12 +436,16 @@ public class CameraFragment extends Fragment
         File newdir = new File(dir);
         newdir.mkdirs();
 
+        mAsyncTask.delegate = this;
+
         return inflater.inflate(R.layout.camera_preview, container, false);
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.launch_camera_button).setOnClickListener(this);
+        view.findViewById(R.id.check_button).setOnClickListener(this);
+
         mTextureView = (CameraTextureView) view.findViewById(R.id.camera_preview);
 
     }
@@ -768,15 +778,16 @@ public class CameraFragment extends Fragment
         }
         mTextureView.setTransform(matrix);
     }
-
+    private int counter = 0;
     /**
      * Initiate a still image capture.
      */
     private void takePicture() {
+
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
 
-        
+
         mFile = new File(dir, timeStamp +".jpg");
         lockFocus();
     }
@@ -888,6 +899,14 @@ public class CameraFragment extends Fragment
                 takePicture();
                 break;
             }
+            case R.id.check_button: {
+                if(counter > 4) {
+                    startMainActivity();
+                }
+                checkImage();
+                counter++;
+                break;
+            }
         }
     }
 
@@ -895,6 +914,32 @@ public class CameraFragment extends Fragment
         if (mFlashSupported) {
             requestBuilder.set(CaptureRequest.CONTROL_AE_MODE,
                     CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
+        }
+    }
+
+    private ClarifaiAsyncTask mAsyncTask = new ClarifaiAsyncTask();
+
+    void checkImage() {
+        Bitmap bMap = null;
+        do {
+            bMap = BitmapFactory.decodeFile(mFile.getPath());
+        } while (bMap == null);
+        mAsyncTask = new ClarifaiAsyncTask();
+        Boolean serverResponse = null;
+        try {
+            serverResponse = mAsyncTask.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Log.d("lel", serverResponse.toString());
+    }
+
+    @Override
+    public void processFinished(Boolean answer) {
+        if(answer) {
+            showToast("IMAGE CORRECT!");
         }
     }
 
@@ -911,6 +956,8 @@ public class CameraFragment extends Fragment
          * The file we save the image into.
          */
         private final File mFile;
+
+
 
         public ImageSaver(Image image, File file) {
             mImage = image;
@@ -1019,4 +1066,9 @@ public class CameraFragment extends Fragment
         }
     }
 
+    public void startMainActivity() {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.putExtra("Score", 3);
+        startActivity(intent);
+    }
 }
