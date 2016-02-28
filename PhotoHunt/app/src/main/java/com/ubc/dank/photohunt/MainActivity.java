@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -56,6 +57,7 @@ import java.util.Set;
  * @author Bruno Oliveira (btco), 2013-04-26
  */
 public class MainActivity extends Activity
+
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener, RealTimeMessageReceivedListener,
         RoomStatusUpdateListener, RoomUpdateListener, OnInvitationReceivedListener {
@@ -671,6 +673,9 @@ public class MainActivity extends Activity
             // finish game
             findViewById(R.id.button_click_me).setVisibility(View.GONE);
             broadcastScore(true);
+
+            startActivity(new Intent(MainActivity.this, UpdateSplashdown.class));
+            //when game is over, switch to updateSplashdown to configure and render splashdown page
         }
     }
 

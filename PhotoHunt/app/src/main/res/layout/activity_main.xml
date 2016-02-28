@@ -21,20 +21,37 @@
     android:layout_height="match_parent" >
 
     <!-- SIGN-IN SCREEN -->
-    <LinearLayout android:id="@+id/screen_sign_in" style="@style/LLScreen">
-        <TextView style="@style/GameTitle" />
-        <TextView style="@style/GameBlurb" />
+    <RelativeLayout android:id="@+id/screen_sign_in"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/title_page"
+            android:layout_centerInParent="true"
+            android:scaleType="fitXY"/>
 
         <Button android:id="@+id/button_single_player"
-            style="@style/MainScreenButton"
+            android:layout_height="48dp"
+            android:layout_width="160dp"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:background="@android:color/holo_orange_dark"
+            android:textColor="@android:color/white"
             android:text="@string/single_player" />
         <com.google.android.gms.common.SignInButton android:id="@+id/button_sign_in"
-            style="@style/SignInButton" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:paddingBottom="24dp"
+            android:layout_centerInParent="true"
+            android:textColor="@android:color/white"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
 
     <!-- MAIN SCREEN -->
-    <LinearLayout android:id="@+id/screen_main" style="@style/LLScreen">
-        <TextView style="@style/GameTitle" />
+    <LinearLayout android:id="@+id/screen_main" style="@style/LLScreen"
+        android:textColor="@android:color/white">
+
         <Button android:id="@+id/button_single_player_2"
             style="@style/MainScreenButton"
             android:text="@string/single_player" />
@@ -76,7 +93,9 @@
     <!-- GAMEPLAY SCREEN -->
     <LinearLayout android:id="@+id/screen_game" style="@style/LLScreen">
         <TextView android:id="@+id/instructions"
-            style="@style/Instructions" android:text="@string/instructions" />
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="take a picture related to ...(insert tag)" />
         <TextView android:id="@+id/my_score" style="@style/ScoreDisplay" />
         <Button android:id="@+id/button_click_me"
                 style="@style/GameButton"
