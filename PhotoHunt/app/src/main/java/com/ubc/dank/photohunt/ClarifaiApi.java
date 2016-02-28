@@ -50,7 +50,6 @@ public class ClarifaiApi {
         if (result != null) {
             if (result.getStatusCode() == RecognitionResult.StatusCode.OK) {
                 // Display the list of tags in the UI.
-                StringBuilder b = new StringBuilder();
                 for (Tag resultTag : result.getTags()) {
                     if (resultTag.getName().equals(tag))
                         return true;
