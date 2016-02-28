@@ -7,6 +7,7 @@
         <string name="game_title">Button Clicker 2000!</string>
         <string name="game_blurb">A sample game that tests your ability to click a button. Can you click faster than your friends? Only one way to find out! To play this game with friends, you must sign in with Google.</string>
         <string name="single_player">Single Player</string>
+        <string name="play_again">Play Again</string>
         <string name="single_player_explanation">Get some practice!</string>
         <string name="quick_game">Quick game</string>
         <string name="invite_players">Invite friends</string>
@@ -17,6 +18,7 @@
         <string name="inv_popup_text">Incoming invitation!</string>
         <string name="accept_popup_invite">Accept!</string>
         <string name="sign_out">Sign Out</string>
+        <string name="pics_hunted">Photos Matched</string>
         <string name="please_wait">Please wait...</string>
         <string name="instructions">Click the button as fast as you can!</string>
         <string name="dismiss">Dismiss</string>

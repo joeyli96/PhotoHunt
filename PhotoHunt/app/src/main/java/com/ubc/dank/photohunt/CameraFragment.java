@@ -912,11 +912,13 @@ public class CameraFragment extends Fragment
                     checkImage();
                     attemptNum++;
                     if (attemptNum > 4) {
-                        startMainActivity();
+                        startEndActivity();
                     }
-                    mTextViewTag.setText(listOfTags.get(attemptNum));
-                    nextTag();
-                    picTaken = false;
+                    if(attemptNum <=4) {
+                        mTextViewTag.setText(listOfTags.get(attemptNum));
+                        nextTag();
+                        picTaken = false;
+                    }
                 }
                 break;
             }
@@ -1057,7 +1059,7 @@ public class CameraFragment extends Fragment
      * Game Logic                                                       *
      ********************************************************************/
     private int attemptNum;
-    private int numCorrect;
+    private int numCorrect = 0;
     private ClarifaiAsyncTask mAsyncTask = new ClarifaiAsyncTask();
     private List<String> listOfTags;
     private String tag;
@@ -1065,9 +1067,9 @@ public class CameraFragment extends Fragment
     private boolean picTaken = false;
     private boolean alreadyChecking = false;
 
-    public void startMainActivity() {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("Score", numCorrect);
+    public void startEndActivity() {
+        Intent intent = new Intent(getActivity(), EndActivity.class);
+        intent.putExtra("score", numCorrect);
         startActivity(intent);
     }
 
