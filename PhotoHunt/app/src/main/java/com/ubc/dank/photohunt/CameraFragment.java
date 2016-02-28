@@ -293,6 +293,8 @@ public class CameraFragment extends Fragment
     /**
      * A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
      */
+
+    private int score = 0;
     private CameraCaptureSession.CaptureCallback mCaptureCallback
             = new CameraCaptureSession.CaptureCallback() {
 
@@ -924,22 +926,15 @@ public class CameraFragment extends Fragment
         do {
             bMap = BitmapFactory.decodeFile(mFile.getPath());
         } while (bMap == null);
-        mAsyncTask = new ClarifaiAsyncTask();
-        Boolean serverResponse = null;
-        try {
-            serverResponse = mAsyncTask.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        Log.d("lel", serverResponse.toString());
+        mAsyncTask.initialize(bMap,"drink");
+        mAsyncTask.execute();
     }
 
     @Override
     public void processFinished(Boolean answer) {
         if(answer) {
             showToast("IMAGE CORRECT!");
+            score++;
         }
     }
 
@@ -1068,7 +1063,7 @@ public class CameraFragment extends Fragment
 
     public void startMainActivity() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("Score", 3);
+        intent.putExtra("Score", score);
         startActivity(intent);
     }
 }

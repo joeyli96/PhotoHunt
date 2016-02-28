@@ -111,7 +111,12 @@ public class MainActivity extends Activity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        if (!hasLeft)
+            setContentView(R.layout.activity_main);
+
+        else if (hasLeft)
+            setContentView(R.layout.splashdown);
 
         // Create the Google Api Client with access to Plus and Games
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -125,10 +130,10 @@ public class MainActivity extends Activity
         for (int id : CLICKABLES) {
             findViewById(id).setOnClickListener(this);
         }
+
         if(hasLeft) {
             int score = intent.getIntExtra("score", -1);
             hasLeft = false;
-
         }
     }
 

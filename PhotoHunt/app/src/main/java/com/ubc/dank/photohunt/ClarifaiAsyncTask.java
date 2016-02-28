@@ -34,7 +34,7 @@ public class ClarifaiAsyncTask extends AsyncTask<Void, Void, Boolean > {
         return ClarifaiApi.checkTag(result, tag);
 
     }
-    @Override public void onPostExecute(Boolean result) {
+    @Override protected void onPostExecute(Boolean result) {
         delegate.processFinished(result);
     }
 }
