@@ -76,6 +76,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -435,7 +436,7 @@ public class CameraFragment extends Fragment
         File newdir = new File(dir);
         newdir.mkdirs();
 
-        mAsyncTask.delagate = this;
+        mAsyncTask.delegate = this;
 
         return inflater.inflate(R.layout.camera_preview, container, false);
     }
@@ -786,7 +787,7 @@ public class CameraFragment extends Fragment
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
 
-        
+
         mFile = new File(dir, timeStamp +".jpg");
         lockFocus();
     }
@@ -924,8 +925,15 @@ public class CameraFragment extends Fragment
             bMap = BitmapFactory.decodeFile(mFile.getPath());
         } while (bMap == null);
         mAsyncTask = new ClarifaiAsyncTask();
-        mAsyncTask.initialize(bMap,"drink");
-        mAsyncTask.execute();
+        Boolean serverResponse = null;
+        try {
+            serverResponse = mAsyncTask.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Log.d("lel", serverResponse.toString());
     }
 
     @Override
