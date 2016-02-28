@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -13,8 +14,16 @@ import com.google.android.gms.*;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesActivityResultCodes;
+import com.google.android.gms.games.GamesStatusCodes;
+import com.google.android.gms.games.multiplayer.Multiplayer;
+import com.google.android.gms.games.multiplayer.realtime.Room;
+import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
+import com.google.android.gms.games.multiplayer.realtime.RoomUpdateListener;
 import com.google.android.gms.plus.Plus;
 import com.google.example.games.basegameutils.BaseGameUtils;
+
+import java.util.ArrayList;
 
 public class MainActivity extends Activity implements
         GoogleApiClient.ConnectionCallbacks,
@@ -68,6 +77,71 @@ public class MainActivity extends Activity implements
     }
 
     @Override
+    public void onActivityResult(int request, int response, Intent data) {
+        if (request == RC_SELECT_PLAYERS) {
+            if (response != Activity.RESULT_OK) {
+                // user canceled
+                Context context = getApplicationContext();
+                int duration = Toast.LENGTH_SHORT;
+                CharSequence text = "Canceled";
+                Toast.makeText(context, text, duration).show();
+                return;
+            }
+
+            // get the invitee list
+            Bundle extras = data.getExtras();
+            final ArrayList<String> invitees =
+                    data.getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
+
+            // get auto-match criteria
+            Bundle autoMatchCriteria = null;
+            int minAutoMatchPlayers =
+                    data.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
+            int maxAutoMatchPlayers =
+                    data.getIntExtra(Multiplayer.EXTRA_MAX_AUTOMATCH_PLAYERS, 0);
+
+            if (minAutoMatchPlayers > 0) {
+                autoMatchCriteria = RoomConfig.createAutoMatchCriteria(
+                        minAutoMatchPlayers, maxAutoMatchPlayers, 0);
+            } else {
+                autoMatchCriteria = null;
+            }
+
+            // create the room and specify a variant if appropriate
+            RoomConfig.Builder roomConfigBuilder = makeBasicRoomConfigBuilder();
+            roomConfigBuilder.addPlayersToInvite(invitees);
+            if (autoMatchCriteria != null) {
+                roomConfigBuilder.setAutoMatchCriteria(autoMatchCriteria);
+            }
+            RoomConfig roomConfig = roomConfigBuilder.build();
+            Games.RealTimeMultiplayer.create(mGoogleApiClient, roomConfig);
+
+            // prevent screen from sleeping during handshake
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+    }
+
+    // create a RoomConfigBuilder that's appropriate for your implementation
+    private RoomConfig.Builder makeBasicRoomConfigBuilder() {
+//        return RoomConfig.builder(this)
+//                .setMessageReceivedListener(this)
+//                .setRoomStatusUpdateListener(this);
+        return null; // TODO: fix this
+    }
+
+
+    // arbitrary request code for the waiting room UI.
+// This can be any integer that's unique in your Activity.
+
+    // create a RoomConfigBuilder that's appropriate for your implementation
+//    private RoomConfig.Builder makeBasicRoomConfigBuilder() {
+//        return RoomConfig.builder(this)
+//                .setMessageReceivedListener(this)
+//                .setRoomStatusUpdateListener(this);
+
+//    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
@@ -119,24 +193,6 @@ public class MainActivity extends Activity implements
         // player to proceed.
     }
 
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent intent) {
-        if (requestCode == RC_SIGN_IN) {
-            mSignInClicked = false;
-            mResolvingConnectionFailure = false;
-            if (resultCode == RESULT_OK) {
-                mGoogleApiClient.connect();
-            } else {
-                // Bring up an error dialog to alert the user that sign-in
-                // failed. The R.string.signin_failure should reference an error
-                // string in your strings.xml file that tells the user they
-                // could not be signed in, such as "Unable to sign in."
-                BaseGameUtils.showActivityResultError(this,
-                        requestCode, resultCode, R.string.signin_failure);
-            }
-        }
-    }
-
     // Call when the sign-in button is clicked
     public void signInClicked(View view) {
         mSignInClicked = true;
@@ -148,4 +204,31 @@ public class MainActivity extends Activity implements
         mSignInClicked = false;
         Games.signOut(mGoogleApiClient);
     }
+
+    // arbitrary request code for the waiting room UI.
+// This can be any integer that's unique in your Activity.
+    final static int RC_WAITING_ROOM = 10002;
+
+    public void onJoinedRoom(int statusCode, Room room) {
+        if (statusCode != GamesStatusCodes.STATUS_OK) {
+            // display error
+            return;
+        }
+
+        // get waiting room intent
+        Intent i = Games.RealTimeMultiplayer.getWaitingRoomIntent(mGoogleApiClient, room, Integer.MAX_VALUE);
+        startActivityForResult(i, RC_WAITING_ROOM);
+    }
+
+    public void onRoomCreated(int statusCode, Room room) {
+        if (statusCode != GamesStatusCodes.STATUS_OK) {
+            // display error
+            return;
+        }
+
+        // get waiting room intent
+        Intent i = Games.RealTimeMultiplayer.getWaitingRoomIntent(mGoogleApiClient, room, Integer.MAX_VALUE);
+        startActivityForResult(i, RC_WAITING_ROOM);
+    }
+
 }
