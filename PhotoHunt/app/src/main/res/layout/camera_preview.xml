@@ -12,12 +12,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_orange_dark">
         <ImageButton
             android:id="@+id/launch_camera_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="16dp"
+            android:backgroundTint="@android:color/white"
             android:layout_gravity="center_horizontal|bottom"
             android:background="@drawable/ic_photo_camera" />
         <Button
@@ -28,6 +30,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:background="@android:color/transparent"
+            android:foregroundTint="@android:color/white"
             android:foreground="@drawable/ic_check_black_24dp"/>
         <TextView
             android:layout_width="wrap_content"
@@ -37,7 +40,8 @@
             android:layout_toEndOf="@id/launch_camera_button"
             android:layout_toStartOf="@id/check_button"
             android:textSize="30sp"
+            android:gravity="center_vertical"
             android:text="test tag"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/white"/>
     </RelativeLayout>
 </LinearLayout>
