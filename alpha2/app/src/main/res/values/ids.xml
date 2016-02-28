@@ -4,12 +4,12 @@ Google Play game services IDs.
 Save this file as res/values/games-ids.xml in your project.
 -->
 <resources>
-    <string name="app_id">455596449842</string>
+    <string name="app_id">682437120791</string>
     <string name="package_name">com.example.android</string>
-    <string name="achievement_1">CgkIssConaENEAIQAg</string>
-    <string name="achievement_2">CgkIssConaENEAIQAw</string>
-    <string name="achievement_3">CgkIssConaENEAIQBA</string>
-    <string name="achievement_4">CgkIssConaENEAIQBQ</string>
-    <string name="achievement_5">CgkIssConaENEAIQBg</string>
-    <string name="leaderboard_leaderboard">CgkIssConaENEAIQAQ</string>
+    <string name="achievement_1">CgkIl6awo-4TEAIQAg</string>
+    <string name="achievement_2">CgkIl6awo-4TEAIQAw</string>
+    <string name="achievement_3">CgkIl6awo-4TEAIQBA</string>
+    <string name="achievement_4">CgkIl6awo-4TEAIQBQ</string>
+    <string name="achievement_5">CgkIl6awo-4TEAIQBg</string>
+    <string name="leaderboard_leaderboard">CgkIl6awo-4TEAIQBw</string>
 </resources>

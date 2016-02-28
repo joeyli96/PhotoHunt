@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">alpha</string>
     <string name="signin_failure">Sign in failed!</string>
-    <string name="google_app_id">455596449842</string>
-    <string name="leaderboard_id">CgkIssConaENEAIQAQ</string>
+    <string name="google_app_id">682437120791</string>
 </resources>
