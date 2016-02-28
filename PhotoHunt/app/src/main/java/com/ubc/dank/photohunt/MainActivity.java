@@ -125,6 +125,7 @@ public class MainActivity extends Activity
         if(hasLeft) {
             int score = intent.getIntExtra("score", -1);
             hasLeft = false;
+
         }
     }
 
