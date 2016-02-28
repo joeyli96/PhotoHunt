@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Photo Hunt</string>
+    <string name="action_settings">Settings</string>
+    <string name="signin_failure">Sign in failed!</string>
+</resources>
