@@ -30,8 +30,8 @@ public class ClarifaiAsyncTask extends AsyncTask<Void, Void, Boolean > {
     }
 
     @Override protected  Boolean doInBackground(Void... params) {
-        RecognitionResult result = ClarifaiApi.recognizeBitmap(bitmap);
-        return ClarifaiApi.checkTag(result, tag);
+        RecognitionResult results = ClarifaiApi.recognizeBitmap(bitmap);
+        return ClarifaiApi.checkTag(results, tag);
 
     }
     @Override protected void onPostExecute(Boolean result) {

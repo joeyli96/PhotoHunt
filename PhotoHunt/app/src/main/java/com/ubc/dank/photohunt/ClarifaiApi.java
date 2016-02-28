@@ -25,7 +25,7 @@ public class ClarifaiApi {
         try
         {
             //optional
-            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 320, 320 * bitmap.getHeight() / bitmap.getWidth(), true);
+            Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 1000, 1000 * bitmap.getHeight() / bitmap.getWidth(), true);
             ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 
             //Converting to JPEG
@@ -41,13 +41,13 @@ public class ClarifaiApi {
     }
 
     public static Boolean checkTag(RecognitionResult result , String tag) {
-
+        Log.i("GOAL TAG", tag);
         if (result != null) {
             if (result.getStatusCode() == RecognitionResult.StatusCode.OK) {
                 // Display the list of tags in the UI.
                 for (Tag resultTag : result.getTags()) {
-                    Log.i("TAG", resultTag.getName());
-                    if (resultTag.getName().toLowerCase().equals(tag.toLowerCase()))
+                    Log.i("RESULTING TAG", resultTag.getName());
+                    if (tag.contains(resultTag.getName()))
                         return true;
                 }
                 return false ;

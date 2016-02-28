@@ -29,5 +29,15 @@
             android:layout_height="50dp"
             android:background="@android:color/transparent"
             android:foreground="@drawable/ic_check_black_24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:id="@+id/tag_textview"
+            android:layout_margin="16dp"
+            android:layout_toEndOf="@id/launch_camera_button"
+            android:layout_toStartOf="@id/check_button"
+            android:textSize="30sp"
+            android:text="test tag"
+            android:textColor="@android:color/black"/>
     </RelativeLayout>
 </LinearLayout>

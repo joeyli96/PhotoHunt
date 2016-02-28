@@ -63,6 +63,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -76,7 +77,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
@@ -447,9 +447,14 @@ public class CameraFragment extends Fragment
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.launch_camera_button).setOnClickListener(this);
         view.findViewById(R.id.check_button).setOnClickListener(this);
-
+        mTextViewTag = (TextView) view.findViewById(R.id.tag_textview);
         mTextureView = (CameraTextureView) view.findViewById(R.id.camera_preview);
+        //Initialize the attemptNum to zero
+        attemptNum = 0;
+        //Initialize the game
+        initializeGame();
 
+        mTextViewTag.setText(listOfTags.get(attemptNum));
     }
 
     @Override
@@ -780,7 +785,7 @@ public class CameraFragment extends Fragment
         }
         mTextureView.setTransform(matrix);
     }
-    private int counter = 0;
+
     /**
      * Initiate a still image capture.
      */
@@ -788,9 +793,8 @@ public class CameraFragment extends Fragment
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-
-
-        mFile = new File(dir, timeStamp +".jpg");
+        
+        mFile = new File(dir,"photo.jpg");
         lockFocus();
     }
 
@@ -860,7 +864,7 @@ public class CameraFragment extends Fragment
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
-                    showToast("Saved: " + mFile);
+                    showToast("Photo Taken!");
                     Log.d(TAG, mFile.toString());
                     unlockFocus();
                 }
@@ -901,12 +905,15 @@ public class CameraFragment extends Fragment
                 takePicture();
                 break;
             }
+            //Increment the number of times checked
             case R.id.check_button: {
-                if(counter > 4) {
+                if(attemptNum > 4) {
                     startMainActivity();
                 }
                 checkImage();
-                counter++;
+                attemptNum++;
+                mTextViewTag.setText(listOfTags.get(attemptNum));
+                nextTag();
                 break;
             }
         }
@@ -918,26 +925,7 @@ public class CameraFragment extends Fragment
                     CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
         }
     }
-
-    private ClarifaiAsyncTask mAsyncTask = new ClarifaiAsyncTask();
-
-    void checkImage() {
-        Bitmap bMap = null;
-        do {
-            bMap = BitmapFactory.decodeFile(mFile.getPath());
-        } while (bMap == null);
-        mAsyncTask.initialize(bMap,"drink");
-        mAsyncTask.execute();
-    }
-
-    @Override
-    public void processFinished(Boolean answer) {
-        if(answer) {
-            showToast("IMAGE CORRECT!");
-            score++;
-        }
-    }
-
+    
     /**
      * Saves a JPEG {@link Image} into the specified {@link File}.
      */
@@ -1061,9 +1049,46 @@ public class CameraFragment extends Fragment
         }
     }
 
+    /********************************************************************
+     * Game Logic                                                       *
+     ********************************************************************/
+    private int attemptNum;
+    private int numCorrect;
+    private ClarifaiAsyncTask mAsyncTask = new ClarifaiAsyncTask();
+    private List<String> listOfTags;
+    private String tag;
+    private TextView mTextViewTag;
+
     public void startMainActivity() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
-        intent.putExtra("Score", score);
+        intent.putExtra("Score", numCorrect);
         startActivity(intent);
+    }
+
+    void checkImage() {
+        Bitmap bMap = null;
+        do {
+            bMap = BitmapFactory.decodeFile(mFile.getPath());
+        } while (bMap == null);
+        mAsyncTask = new ClarifaiAsyncTask();
+        mAsyncTask.initialize(bMap, listOfTags.get(attemptNum));
+        mAsyncTask.execute();
+    }
+
+    @Override
+    public void processFinished(Boolean answer) {
+        if(answer) {
+            numCorrect++;
+            showToast("Hunted! :)");
+        } else {
+            showToast("Missed! :(");
+        }
+    }
+    public void initializeGame() {
+        WordBank wordBank = new WordBank();
+        listOfTags = wordBank.getWords(5);
+    }
+    public void nextTag() {
+        tag = listOfTags.get(attemptNum);
     }
 }
