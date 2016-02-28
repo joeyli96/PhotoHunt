@@ -67,6 +67,8 @@ public class MainActivity extends Activity
 
     final static String TAG = "ButtonClicker2000";
 
+    boolean hasLeft = false;
+
     // Request codes for the UIs that we show with startActivityForResult:
     final static int RC_SELECT_PLAYERS = 10000;
     final static int RC_INVITATION_INBOX = 10001;
@@ -112,11 +114,11 @@ public class MainActivity extends Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!hasLeft)
+        //if (!hasLeft)
             setContentView(R.layout.activity_main);
 
-        else if (hasLeft)
-            setContentView(R.layout.splashdown);
+        /*else if (hasLeft)
+            setContentView(R.layout.splashdown);*/
 
         // Create the Google Api Client with access to Plus and Games
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -192,10 +194,6 @@ public class MainActivity extends Activity
             case R.id.button_quick_game:
                 // user wants to play against a random opponent right now
                 startQuickGame();
-                break;
-            case R.id.button_click_me:
-                // (gameplay) user clicked the "click me" button
-                scoreOnePoint();
                 break;
         }
     }
@@ -651,32 +649,11 @@ public class MainActivity extends Activity
         mMultiplayer = multiplayer;
         startCameraActivity();
     }
-    boolean hasLeft = false;
+
     public void startCameraActivity() {
         hasLeft = true;
         Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
-    }
-
-
-
-    // Game tick -- update countdown, check if game ended.
-    void gameTick() {
-        if (mSecondsLeft > 0)
-            --mSecondsLeft;
-
-        // update countdown
-        ((TextView) findViewById(R.id.countdown)).setText("0:" +
-                (mSecondsLeft < 10 ? "0" : "") + String.valueOf(mSecondsLeft));
-
-        if (mSecondsLeft <= 0) {
-            // finish game
-            findViewById(R.id.button_click_me).setVisibility(View.GONE);
-            broadcastScore(true);
-
-            startActivity(new Intent(MainActivity.this, UpdateSplashdown.class));
-            //when game is over, switch to updateSplashdown to configure and render splashdown page
-        }
     }
 
     // indicates the player scored one point
@@ -786,7 +763,7 @@ public class MainActivity extends Activity
     final static int[] CLICKABLES = {
             R.id.button_accept_popup_invitation, R.id.button_invite_players,
             R.id.button_quick_game, R.id.button_see_invitations, R.id.button_sign_in,
-            R.id.button_sign_out, R.id.button_click_me, R.id.button_single_player,
+            R.id.button_sign_out, R.id.button_single_player,
             R.id.button_single_player_2
     };
 
@@ -829,7 +806,7 @@ public class MainActivity extends Activity
 
     // updates the label that shows my score
     void updateScoreDisplay() {
-        ((TextView) findViewById(R.id.my_score)).setText(formatScore(mScore));
+
     }
 
     // formats a score as a three-digit number
@@ -842,29 +819,7 @@ public class MainActivity extends Activity
 
     // updates the screen with the scores from our peers
     void updatePeerScoresDisplay() {
-        ((TextView) findViewById(R.id.score0)).setText(formatScore(mScore) + " - Me");
-        int[] arr = {
-                R.id.score1, R.id.score2, R.id.score3
-        };
-        int i = 0;
 
-        if (mRoomId != null) {
-            for (Participant p : mParticipants) {
-                String pid = p.getParticipantId();
-                if (pid.equals(mMyId))
-                    continue;
-                if (p.getStatus() != Participant.STATUS_JOINED)
-                    continue;
-                int score = mParticipantScore.containsKey(pid) ? mParticipantScore.get(pid) : 0;
-                ((TextView) findViewById(arr[i])).setText(formatScore(score) + " - " +
-                        p.getDisplayName());
-                ++i;
-            }
-        }
-
-        for (; i < arr.length; ++i) {
-            ((TextView) findViewById(arr[i])).setText("");
-        }
     }
 
     /*
