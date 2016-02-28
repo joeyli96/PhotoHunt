@@ -109,8 +109,7 @@
         android:layout_height="fill_parent"
         android:background="@android:color/holo_green_light"/>
 
-
-    <include layout="@layout/content_test" />
+        
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
