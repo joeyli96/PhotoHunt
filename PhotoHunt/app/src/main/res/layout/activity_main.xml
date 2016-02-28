@@ -18,129 +18,15 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <!-- SIGN-IN SCREEN -->
-    <RelativeLayout android:id="@+id/screen_sign_in"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:visibility="visible">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/title_page"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY"/>
-
-        <Button android:id="@+id/button_single_player"
-            android:layout_height="48dp"
-            android:layout_width="160dp"
-            android:layout_centerVertical="true"
-            android:layout_centerInParent="true"
-            android:background="@android:color/holo_orange_dark"
-            android:textColor="@android:color/white"
-            android:text="@string/single_player" />
-        <com.google.android.gms.common.SignInButton android:id="@+id/button_sign_in"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:paddingBottom="24dp"
-            android:layout_centerInParent="true"
-            android:textColor="@android:color/white"
-            android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
-
-    <!-- MAIN SCREEN -->
-    <RelativeLayout android:id="@+id/screen_main"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:textColor="@android:color/white">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/title_page"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:paddingTop="236dp"
-            android:gravity="center"
-            android:orientation="vertical">
-            <Button android:id="@+id/button_single_player_2"
-                android:layout_height="32dp"
-                android:layout_width="160dp"
-
-                android:background="@android:color/holo_orange_dark"
-                android:textColor="@android:color/white"
-                android:text="@string/single_player"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"/>
-
-            <Button android:id="@+id/button_quick_game"
-                android:layout_height="32dp"
-                android:layout_width="160dp"
-                android:layout_centerVertical="true"
-                android:background="@android:color/holo_orange_dark"
-                android:textColor="@android:color/white"
-                android:text="@string/quick_game"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"/>
-
-            <Button android:id="@+id/button_invite_players"
-                android:layout_height="32dp"
-                android:layout_width="160dp"
-                android:layout_centerVertical="true"
-                android:background="@android:color/holo_orange_dark"
-                android:textColor="@android:color/white"
-                android:text="@string/invite_players"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"/>
-
-            <Button android:id="@+id/button_see_invitations"
-                android:layout_height="32dp"
-                android:layout_width="160dp"
-                android:layout_centerVertical="true"
-                android:background="@android:color/holo_orange_dark"
-                android:textColor="@android:color/white"
-                android:text="@string/see_invitations"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp" />
-
-            <Button android:id="@+id/button_sign_out"
-                style="@style/SignOutButton"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="8dp"
-                android:layout_height="32dp"
-                android:text="@string/sign_out" />
-        </LinearLayout>
-
-    </RelativeLayout>
-
-    <!-- INVITATION POPUP -->
-    <LinearLayout android:id="@+id/invitation_popup" style="@style/InvPopup">
-        <TextView android:id="@+id/incoming_invitation_text" style="@style/InvPopupText" />
-        <Button android:id="@+id/button_accept_popup_invitation"
-            style="@style/InvPopupButton"
-            android:text="@string/accept_popup_invite" />
-    </LinearLayout>
-
-    <!-- "PLEASE WAIT" SCREEN -->
-    <LinearLayout android:id="@+id/screen_wait" style="@style/LLScreen">
-        <TextView style="@style/Blurb" android:text="@string/please_wait" />
-    </LinearLayout>
-
-    <!-- GAMEPLAY SCREEN -->
-    <LinearLayout android:id="@+id/screen_game"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/background"
-            android:layout_centerInParent="true"
-            android:scaleType="fitXY" />
-    </LinearLayout>
+    <Button android:id="@+id/button_single_player"
+        android:layout_height="48dp"
+        android:layout_width="160dp"
+        android:layout_centerVertical="true"
+        android:layout_centerInParent="true"
+        android:background="@android:color/holo_orange_dark"
+        android:textColor="@android:color/white"
+        android:text="@string/single_player"
+        android:layout_gravity="center" />
 </FrameLayout>

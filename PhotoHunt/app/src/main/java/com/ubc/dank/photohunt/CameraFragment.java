@@ -903,17 +903,21 @@ public class CameraFragment extends Fragment
         switch (view.getId()) {
             case R.id.launch_camera_button: {
                 takePicture();
+                picTaken = true;
                 break;
             }
             //Increment the number of times checked
             case R.id.check_button: {
-                if(attemptNum > 4) {
-                    startMainActivity();
+                if(picTaken) {
+                    checkImage();
+                    attemptNum++;
+                    if (attemptNum > 4) {
+                        startMainActivity();
+                    }
+                    mTextViewTag.setText(listOfTags.get(attemptNum));
+                    nextTag();
+                    picTaken = false;
                 }
-                checkImage();
-                attemptNum++;
-                mTextViewTag.setText(listOfTags.get(attemptNum));
-                nextTag();
                 break;
             }
         }
@@ -925,7 +929,7 @@ public class CameraFragment extends Fragment
                     CaptureRequest.CONTROL_AE_MODE_ON_AUTO_FLASH);
         }
     }
-    
+
     /**
      * Saves a JPEG {@link Image} into the specified {@link File}.
      */
@@ -1058,6 +1062,8 @@ public class CameraFragment extends Fragment
     private List<String> listOfTags;
     private String tag;
     private TextView mTextViewTag;
+    private boolean picTaken = false;
+    private boolean alreadyChecking = false;
 
     public void startMainActivity() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -1070,9 +1076,14 @@ public class CameraFragment extends Fragment
         do {
             bMap = BitmapFactory.decodeFile(mFile.getPath());
         } while (bMap == null);
-        mAsyncTask = new ClarifaiAsyncTask();
-        mAsyncTask.initialize(bMap, listOfTags.get(attemptNum));
-        mAsyncTask.execute();
+        if(!alreadyChecking) {
+            if(mAsyncTask == null) {
+                mAsyncTask = new ClarifaiAsyncTask();
+            }
+            mAsyncTask.initialize(bMap, listOfTags.get(attemptNum));
+            mAsyncTask.execute();
+            alreadyChecking = true;
+        }
     }
 
     @Override
@@ -1083,6 +1094,11 @@ public class CameraFragment extends Fragment
         } else {
             showToast("Missed! :(");
         }
+
+        alreadyChecking = false;
+
+        mAsyncTask.cancel(true);
+        mAsyncTask = null;
     }
     public void initializeGame() {
         WordBank wordBank = new WordBank();
