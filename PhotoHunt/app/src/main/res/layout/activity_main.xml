@@ -65,53 +65,55 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="236dp"
+            android:gravity="center"
             android:orientation="vertical">
             <Button android:id="@+id/button_single_player_2"
-                android:layout_height="48dp"
+                android:layout_height="32dp"
                 android:layout_width="160dp"
-                android:layout_centerVertical="true"
+
                 android:background="@android:color/holo_orange_dark"
                 android:textColor="@android:color/white"
                 android:text="@string/single_player"
-                android:padding="16dp"/>
-            <TextView style="@style/MainScreenButtonBlurb"
-                android:text="@string/single_player_explanation" />
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"/>
 
             <Button android:id="@+id/button_quick_game"
-                android:layout_height="48dp"
+                android:layout_height="32dp"
                 android:layout_width="160dp"
                 android:layout_centerVertical="true"
                 android:background="@android:color/holo_orange_dark"
                 android:textColor="@android:color/white"
-                android:text="@string/single_player"
-                android:padding="16dp"/>
-            <TextView style="@style/MainScreenButtonBlurb"
-                android:text="@string/quick_game_explanation" />
+                android:text="@string/quick_game"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"/>
 
             <Button android:id="@+id/button_invite_players"
-                android:layout_height="48dp"
+                android:layout_height="32dp"
                 android:layout_width="160dp"
                 android:layout_centerVertical="true"
                 android:background="@android:color/holo_orange_dark"
                 android:textColor="@android:color/white"
-                android:text="@string/single_player"
-                android:padding="16dp"/>
-            <TextView style="@style/MainScreenButtonBlurb"
-                android:text="@string/invite_players_explanation" />
+                android:text="@string/invite_players"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"/>
 
             <Button android:id="@+id/button_see_invitations"
-                android:layout_height="48dp"
+                android:layout_height="32dp"
                 android:layout_width="160dp"
                 android:layout_centerVertical="true"
                 android:background="@android:color/holo_orange_dark"
                 android:textColor="@android:color/white"
-                android:text="@string/single_player"
-                android:padding="16dp"/>
-            <TextView style="@style/MainScreenButtonBlurb"
-                android:text="@string/see_invitations_explanation" />
+                android:text="@string/see_invitations"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp" />
 
             <Button android:id="@+id/button_sign_out"
                 style="@style/SignOutButton"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:layout_height="32dp"
                 android:text="@string/sign_out" />
         </LinearLayout>
 
